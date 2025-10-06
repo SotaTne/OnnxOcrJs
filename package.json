@@ -50,6 +50,7 @@
     "@types/ndarray": "^1.0.14",
     "@types/ndarray-ops": "^1.2.7",
     "@types/node": "^24.6.2",
+    "@types/serve-handler": "^6.1.4",
     "esbuild": "^0.25.10",
     "jimp": "^1.6.0",
     "onnxruntime-node": "^1.23.0",

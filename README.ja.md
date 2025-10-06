@@ -35,6 +35,7 @@ import { ONNXPaddleOCR } from "onnx-ocr-js";
 import * as fs from "fs/promises";
 import * as ort from "onnxruntime-node";
 import cvReadyPromise from "@techstark/opencv-js";
+import { Jimp } from "jimp";
 
 const cv = await cvReadyPromise;
 const detModel = await fs.readFile("./models/ppocrv5/det/det.onnx");
@@ -66,7 +67,6 @@ const textSystem = await ocr.init({
 });
 
 // OpenCV.js で画像を Mat に変換
-import { Jimp } from "jimp";
 const jimpImage = await Jimp.read("./test.png");
 const mat = cv.matFromImageData(jimpImage.bitmap);
 const mat3ch = new cv.Mat();
@@ -86,9 +86,9 @@ console.log(results);
 
   const cv = await cvReadyPromise;
 
-  const detModel = await fetch("/models/ppocrv5/det/det.onnx").then(r => r.arrayBuffer());
-  const recModel = await fetch("/models/ppocrv5/rec/rec.onnx").then(r => r.arrayBuffer());
-  const clsModel = await fetch("/models/ppocrv5/cls/cls.onnx").then(r => r.arrayBuffer());
+  const detModel = await fetch("/models/ppocrv5/det/det.onnx").then(r => r.arrayBuffer()).then(b => new Uint8Array(b));
+  const recModel = await fetch("/models/ppocrv5/rec/rec.onnx").then(r => r.arrayBuffer()).then(b => new Uint8Array(b));
+  const clsModel = await fetch("/models/ppocrv5/cls/cls.onnx").then(r => r.arrayBuffer()).then(b => new Uint8Array(b));
   const charset = await fetch("/models/ppocrv5/ppocrv5_dict.txt").then(r => r.text());
 
   const ocr = new ONNXPaddleOCR({ use_angle_cls: true });

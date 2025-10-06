@@ -1,0 +1,20 @@
+{
+  "name": "node",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "@techstark/opencv-js": "^4.11.0-release.1",
+    "jimp": "^1.6.0",
+    "onnx-ocr-js": "^0.0.3",
+    "onnxruntime-node": "^1.23.0"
+  }
+}

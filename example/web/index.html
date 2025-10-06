@@ -24,7 +24,7 @@
   <script type="module">
     "use strict";
 
-    import { ONNXPaddleOCR } from "https://esm.sh/onnx-ocr-js@";
+    import { ONNXPaddleOCR } from "https://esm.sh/onnx-ocr-js";
 
     const status = document.getElementById("status");
     const result = document.getElementById("result");
@@ -38,9 +38,9 @@
       status.textContent = "Loading models...";
 
       const [detModel, recModel, clsModel, charset] = await Promise.all([
-        fetch("models/ppocrv5/det/det.onnx").then(r => r.arrayBuffer()).then(b => new Uint8Array(b)),
-        fetch("models/ppocrv5/rec/rec.onnx").then(r => r.arrayBuffer()).then(b => new Uint8Array(b)),
-        fetch("models/ppocrv5/cls/cls.onnx").then(r => r.arrayBuffer()).then(b => new Uint8Array(b)),
+        fetch("models/ppocrv5/det/det.ort").then(r => r.arrayBuffer()).then(b => new Uint8Array(b)),
+        fetch("models/ppocrv5/rec/rec.ort").then(r => r.arrayBuffer()).then(b => new Uint8Array(b)),
+        fetch("models/ppocrv5/cls/cls.ort").then(r => r.arrayBuffer()).then(b => new Uint8Array(b)),
         fetch("models/ppocrv5/ppocrv5_dict.txt").then(r => r.text())
       ]);
 
