@@ -142,6 +142,8 @@ vite.config.ts.timestamp-*
 
 .serena/
 
+.claude/
+
 .DS_Store
 
 # Playwright

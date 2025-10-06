@@ -47,11 +47,14 @@ export class TextSystem {
   }
 
   static async create(params: TextSystemParams) {
-    const text_detector = await TextDetector.create(params);
-    const text_recognizer = await TextRecognizer.create(params);
-    const text_classifier = params.use_angle_cls
-      ? await TextClassifier.create(params)
-      : null;
+    // Parallelize model initialization for faster startup
+    const [text_detector, text_recognizer, text_classifier] = await Promise.all([
+      TextDetector.create(params),
+      TextRecognizer.create(params),
+      params.use_angle_cls
+        ? TextClassifier.create(params)
+        : Promise.resolve(null),
+    ]);
     return new TextSystem({
       ...params,
       text_detector,
@@ -71,6 +74,7 @@ export class TextSystem {
       | Box[]
       | null;
     if (!Array.isArray(dt_boxes) || dt_boxes.length === 0) {
+      ori_img.delete();
       return [null, null];
     }
 
@@ -80,6 +84,7 @@ export class TextSystem {
       this.det_box_type,
       this.cv,
     );
+    ori_img.delete();
     if (this.use_angle_cls && cls && this.text_classifier) {
       [img_crop_list] = await this.text_classifier.execute(img_crop_list);
     }
@@ -87,6 +92,12 @@ export class TextSystem {
     // if (this.save_crop_res) {
     //   // Save cropped images
     // }
+
+    // img_crop_listの各Matを削除
+    for (const crop_img of img_crop_list) {
+      crop_img.delete();
+    }
+
     const filtered_boxes: Box[] = [];
     const filtered_rec_res = [];
     if (dt_boxes.length !== rec_res.length) {

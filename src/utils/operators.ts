@@ -227,6 +227,7 @@ export class DetResizeForTest {
       resizedImg,
       new this.cv.Size(Math.trunc(resize_w), Math.trunc(resize_h)),
     );
+    img.delete();
     return { img: resizedImg, ratio_h, ratio_w };
   }
 
@@ -275,6 +276,7 @@ export class DetResizeForTest {
     try {
       this.cv.resize(img, resized_img, new this.cv.Size(resize_w, resize_h));
     } catch {
+      resized_img.delete();
       throw new Error(
         `DetResizeForTest: cv.resize failed. resize_w: ${resize_w}, resize_h: ${resize_h}, img.cols: ${
           img.cols
@@ -283,6 +285,7 @@ export class DetResizeForTest {
     }
     const ratio_h = resize_h / h;
     const ratio_w = resize_w / w;
+    img.delete();
     return { img: resized_img, ratio_h, ratio_w };
   }
 
@@ -312,6 +315,7 @@ export class DetResizeForTest {
     this.cv.resize(img, dst_img, new this.cv.Size(resize_w, resize_h));
     const ratio_h = resize_h / h;
     const ratio_w = resize_w / w;
+    img.delete();
     return { img: dst_img, ratio_h, ratio_w };
   }
 }

@@ -140,9 +140,11 @@ export class DBPostProcess {
           this.dilation_kernel.data,
         );
         this.cv.dilate(matSegment, maskSegment, kernel);
+        kernel.delete();
       } else {
         matSegment.copyTo(maskSegment);
       }
+      matSegment.delete();
       let boxes: Point[][] | NdArray;
       let score: number[];
       if (this.box_type === "poly") {
@@ -249,6 +251,9 @@ export class DBPostProcess {
       }
       const [_box, sside] = this.get_mini_boxes(box);
       if (sside < this.min_size + 2) {
+        if (box !== points) {
+          box.delete();
+        }
         continue;
       }
       const ndArrayBox = matToNdArray(box, this.cv, true); // (N,2)
@@ -288,6 +293,9 @@ export class DBPostProcess {
       );
       boxes.push(ndArrayToList(ndArrayBoxUpdated) as Point[]);
       scores.push(score);
+      if (box !== points) {
+        box.delete();
+      }
     }
     // メモリクリーンアップ
     scaledBitMap.delete();
@@ -579,7 +587,16 @@ export class DBPostProcess {
     this.cv.fillPoly(maskCV, vectorBoxCV, color);
     const clonedBitmap = cloneNdArray(bitmap);
     const picked = clonedBitmap.hi(ymax + 1, xmax + 1).lo(ymin, xmin);
-    return this.cv.mean(ndArrayToMat(picked, this.cv), maskCV)[0]!;
+    const pickedMat = ndArrayToMat(picked, this.cv);
+    const meanValue = this.cv.mean(pickedMat, maskCV)[0]!;
+
+    // メモリクリーンアップ
+    boxCV.delete();
+    vectorBoxCV.delete();
+    maskCV.delete();
+    pickedMat.delete();
+
+    return meanValue;
   }
 
   box_score_slow(bitmap: NdArray, _contour: Mat) {
@@ -676,7 +693,16 @@ export class DBPostProcess {
     this.cv.fillPoly(maskCV, vectorBoxCV, color);
     const clonedBitmap = cloneNdArray(bitmap);
     const picked = clonedBitmap.hi(ymax + 1, xmax + 1).lo(ymin, xmin);
-    return this.cv.mean(ndArrayToMat(picked, this.cv), maskCV)[0]!;
+    const pickedMat = ndArrayToMat(picked, this.cv);
+    const meanValue = this.cv.mean(pickedMat, maskCV)[0]!;
+
+    // メモリクリーンアップ
+    counterCV.delete();
+    vectorBoxCV.delete();
+    maskCV.delete();
+    pickedMat.delete();
+
+    return meanValue;
   }
 
   get_mini_boxes(counter: Mat): [Box, number] {

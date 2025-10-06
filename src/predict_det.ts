@@ -213,7 +213,10 @@ export class TextDetector extends PredictBase {
     const transformed = transform(data, this.preprocess_op) as
       | DataValues[]
       | null;
-    if (!transformed || !transformed[0]) return null;
+    if (!transformed || !transformed[0]) {
+      ori_im.delete();
+      return null;
+    }
 
     const img = transformed[0]! as NdArrayData["image"];
     const shape_list = transformed[1]! as Data["shape"];

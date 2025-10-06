@@ -103,6 +103,7 @@ export class TextRecognizer extends PredictBase {
         this.cv.CV_8UC1,
         matToLine(det_cvt, this.cv).data,
       );
+      det_cvt.delete();
       const det_resized_img = new this.cv.Mat();
       if (this.rec_algorithm === "ViTSTR") {
         this.cv.resize(
@@ -123,14 +124,17 @@ export class TextRecognizer extends PredictBase {
           this.cv.INTER_LANCZOS4,
         );
       }
+      uint8_img.delete();
       const det_resized_3c_img = new this.cv.Mat();
       this.cv.cvtColor(
         det_resized_img,
         det_resized_3c_img,
         this.cv.COLOR_GRAY2BGR,
       );
+      det_resized_img.delete();
 
       const ndarray_img = matToNdArray(det_resized_3c_img, this.cv);
+      det_resized_3c_img.delete();
 
       const img_3c_list = ndArrayToList(
         cloneNdArray(ndarray_img),
@@ -162,13 +166,16 @@ export class TextRecognizer extends PredictBase {
         0,
         this.cv.INTER_CUBIC,
       );
+      det_cvt.delete();
       const det_resized_3c_img = new this.cv.Mat();
       this.cv.cvtColor(
         det_resized_img,
         det_resized_3c_img,
         this.cv.COLOR_GRAY2BGR,
       );
+      det_resized_img.delete();
       const ndarray_img = matToNdArray(det_resized_3c_img, this.cv);
+      det_resized_3c_img.delete();
       const img_3c_list = ndArrayToList(
         cloneNdArray(ndarray_img),
       ) as number[][][];
@@ -214,7 +221,9 @@ export class TextRecognizer extends PredictBase {
 
     const resized_img = new this.cv.Mat();
     this.cv.resize(rgb, resized_img, new this.cv.Size(resized_w, imgH), 0, 0);
+    rgb.delete();
     const ndarray_img = matToNdArray(resized_img, this.cv);
+    resized_img.delete();
     const transposed = ndarray_img.transpose(2, 0, 1); // (3,H,W)
 
     const transposed_list = (ndArrayToList(transposed) as number[][][]).flat(2);
@@ -261,10 +270,10 @@ export class TextRecognizer extends PredictBase {
   async execute(img_list: Mat[]) {
     const img_num = img_list.length;
 
-    const width_list: number[] = [];
-    for (const img of img_list) {
-      width_list.push(img.cols / img.rows);
-    }
+    const width_list: number[] = img_list.map((img) => img.cols / img.rows);
+    // for (const img of img_list) {
+    //   width_list.push(img.cols / img.rows);
+    // }
     const indices = argsort(width_list);
     const rec_res: [string, number][] = Array(img_num).fill(["", 0]);
     const batch_num = this.rec_batch_num;
