@@ -73,7 +73,7 @@ describe("TextClassifier / TextDetector", () => {
 
     // cls
 
-    const img_crop_list: Mat[] = getImgCropList(
+    const { crops: img_crop_list } = getImgCropList(
       imageMat3Ch.clone(),
       boxes as Box[],
       det_box_type,

@@ -390,8 +390,13 @@ beforeAll(async () => {
 
 describe("crop-and-rect-img", () => {
   it("get_minarea_rect_crop", async () => {
-    const result = getImgCropList(ori_im_mat.clone(), boxes, "quad", cv);
-    const listResult = result.map((mat) => matToList(mat, cv) as number[][][]);
+    const { crops, sortedBoxes: _sorted } = getImgCropList(
+      ori_im_mat.clone(),
+      boxes,
+      "quad",
+      cv,
+    );
+    const listResult = crops.map((mat) => matToList(mat, cv) as number[][][]);
     expect(listResult.length).toBe(boxes.length);
     expect(listResult[0]!.slice(0, 10)).toEqual(
       (ori_im_list as number[][][][])[0]!.slice(0, 10),
@@ -411,8 +416,13 @@ describe("crop-and-rect-img", () => {
     // expect(Uint8Array.from(listResult.flat(3)));
   });
   it("get_rotate_crop_image", async () => {
-    const result = getImgCropList(ori_im_mat.clone(), polyBoxes, "poly", cv);
-    const listResult = result.map((mat) => matToList(mat, cv) as number[][][]);
+    const { crops, sortedBoxes: _sorted } = getImgCropList(
+      ori_im_mat.clone(),
+      polyBoxes,
+      "poly",
+      cv,
+    );
+    const listResult = crops.map((mat) => matToList(mat, cv) as number[][][]);
     expect(listResult.length).toBe(polyBoxes.length);
     expect(listResult[0]!.slice(0, 10)).toEqual(
       (ori_poly_im_list as number[][][][])[0]!.slice(0, 10),

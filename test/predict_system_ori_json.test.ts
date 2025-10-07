@@ -100,6 +100,10 @@ describe("TextDetector", () => {
     const results = await textSystem.execute(imageMat);
     expect(results[0]).toBeDefined();
     expect(results[1]).toBeDefined();
+
+    if (results[0] === null || results[1] === null) {
+      throw new Error("No results");
+    }
     expect(results[0]!.length).toEqual(results[1]!.length);
     console.log("results[1]:", results[1]);
   });
