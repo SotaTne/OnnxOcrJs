@@ -7,16 +7,24 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.cjs"
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      },
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.mjs"
+      },
+      "default": "./dist/index.mjs"
     }
   },
   "type": "module",
   "scripts": {
     "test": "vitest",
     "test:playwright": "pnpm exec playwright test",
-    "build:types": "tsc -p tsconfig.build.json",
+    "types:esm": "tsc -p tsconfig.esm.json",
+    "types:cjs": "tsc -p tsconfig.cjs.json",
+    "build:types": "pnpm run types:esm && pnpm run types:cjs",
     "build:bundle": "node esbuild.config.mjs",
     "build": "npm run build:types && npm run build:bundle",
     "prepublishOnly": "npm run build"
