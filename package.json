@@ -1,6 +1,6 @@
 {
   "name": "onnx-ocr-js",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "ONNX-based OCR system for Node.js and Browser (PaddleOCR compatible)",
   "main": "dist/index.cjs",
   "module": "dist/index.mjs",
