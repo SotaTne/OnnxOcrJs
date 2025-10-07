@@ -1,5 +1,5 @@
 "use strict";
-import { ONNXPaddleOCR } from "onnx-ocr-js";
+import { ONNXPaddleOCR } from "../src/index";
 import * as fs from "fs/promises";
 import { Jimp } from "jimp";
 import { CV2, ORT } from "../src/types/type";

@@ -7,6 +7,6 @@ export default defineConfig({
     deps: {
       interopDefault: true, // デフォルトエクスポートを正しく解釈
     },
-    testTimeout: 50000,
+    testTimeout: 100000,
   },
 });

@@ -2,9 +2,16 @@
   "name": "onnx-ocr-js",
   "version": "0.0.5",
   "description": "ONNX-based OCR system for Node.js and Browser (PaddleOCR compatible)",
-  "main": "dist/index.cjs",
-  "module": "dist/index.mjs",
-  "types": "dist/index.d.ts",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    }
+  },
   "type": "module",
   "scripts": {
     "test": "vitest",
@@ -36,13 +43,6 @@
     "dist",
     "models"
   ],
-  "exports": {
-    ".": {
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.cjs",
-      "types": "./dist/index.d.ts"
-    }
-  },
   "packageManager": "pnpm@10.8.1",
   "devDependencies": {
     "@playwright/test": "^1.55.1",
