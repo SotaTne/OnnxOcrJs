@@ -43,6 +43,7 @@
     "skipLibCheck": true
   },
   "exclude": [
+    "_src",
     "vitest.*.ts",
     "node_modules",
     "dist",

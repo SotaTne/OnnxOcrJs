@@ -3,7 +3,7 @@
   "version": "0.0.6",
   "description": "ONNX-based OCR system for Node.js and Browser (PaddleOCR compatible)",
   "main": "./dist/index.cjs",
-  "module": "./dist/index.mjs",
+  "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
@@ -13,9 +13,9 @@
       },
       "import": {
         "types": "./dist/index.d.ts",
-        "default": "./dist/index.mjs"
+        "default": "./dist/index.js"
       },
-      "default": "./dist/index.mjs"
+      "default": "./dist/index.js"
     }
   },
   "type": "module",
